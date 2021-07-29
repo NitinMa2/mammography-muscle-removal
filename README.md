@@ -37,7 +37,14 @@ conda activate fyp_env
 
 ## Updating the Environment
 
-If there are changes to the environment, you will need to update the YAML file. To update the contents of your `environment.yml` file, run the following command:
+To add/remove a library to the environment, refer to the following commands:
+
+```bash
+conda install package-name
+conda remove package-name
+```
+
+Changes to the environment will need to be reflected in the YAML file. To update the contents of your `environment.yml` file, run the following command:
 
 ```bash
 conda env update --name fyp_env --file environment.yml --prune
