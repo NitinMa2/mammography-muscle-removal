@@ -6,9 +6,11 @@ Final Year Project aimed to detect and remove the pectoral muscle region from ma
 
 ## Prerequisites
 
--   [Miniconda](https://docs.conda.io/en/latest/miniconda.html) (preferred) or [Anaconda](https://www.anaconda.com/products/individual)
+-   [Miniconda](https://docs.conda.io/en/latest/miniconda.html) (preferred) or [Anaconda](https://www.anaconda.com/products/individual) (for MacOS)
 
 ## Setup
+
+### For Windows Users
 
 Follow these steps using the **Anaconda Prompt** to setup the project:
 
@@ -26,6 +28,10 @@ The environment should now contain the following libraries:
 -   Numpy
 -   Matplotlib
 -   Seaborn
+
+### For MacOS Users
+
+Use conda through the **Terminal** and use the default Anaconda environment.
 
 ## Activating the Environment
 
@@ -48,6 +54,14 @@ Changes to the environment will need to be reflected in the YAML file. To update
 
 ```bash
 conda env update --name fyp_env --file environment.yml --prune
+```
+
+## Starting the Jupyter Notebook
+
+To run the jupyter notebook on your localhost, run this command from the project folder after activating the environment:
+
+```bash
+jupyter notebook
 ```
 
 # Contributing Guidelines
