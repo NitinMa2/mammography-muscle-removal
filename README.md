@@ -70,8 +70,9 @@ All python code should exist in a Jupyter Notebook. When contributing to this re
 
 1. Activate the environment.
 2. Create your feature branch (`git checkout -b feature/your-amazing-feature`).
-3. Commit your changes (`git commit -am 'adding my amazing feature'`).
-4. Push to the branch (`git push origin feature/your-amazing-feature`).
-5. Open a Pull Request on GitHub or merge your code into `main` and then push it.
+3. Add your changes (`git add .`).
+4. Commit your changes (`git commit -m 'adding my amazing feature'`).
+5. Push to the branch (`git push origin feature/your-amazing-feature`).
+6. Open a Pull Request on GitHub or merge your code into `main` and then push it.
 
 _Note: Please do not work directly on the `main` branch._
