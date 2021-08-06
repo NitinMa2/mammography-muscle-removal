@@ -53,6 +53,12 @@ conda remove package-name
 Changes to the environment will need to be reflected in the YAML file. To update the contents of your `environment.yml` file, run the following command:
 
 ```bash
+conda env export > environment.yml
+```
+
+If there are changes in the `environment.yml`, you will need to update your environment by running:
+
+```bash
 conda env update --name fyp_env --file environment.yml --prune
 ```
 
