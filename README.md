@@ -28,6 +28,7 @@ The environment should now contain the following libraries:
 -   Numpy
 -   Matplotlib
 -   Seaborn
+-   Scikit-image
 
 ### For MacOS Users
 
