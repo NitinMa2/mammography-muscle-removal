@@ -29,6 +29,7 @@ The environment should now contain the following libraries:
 -   Matplotlib
 -   Seaborn
 -   Scikit-image
+-   OpenCV-Python
 
 ### For MacOS Users
 

@@ -57,6 +57,7 @@ dependencies:
   - libpng=1.6.37=h2a8f88b_0
   - libsodium=1.0.18=h62dcd97_0
   - libtiff=4.2.0=hd0e1b90_0
+  - libwebp-base=1.2.0=h2bbff1b_0
   - libzopfli=1.0.3=ha925a31_0
   - locket=0.2.1=py39haa95532_1
   - lz4-c=1.9.3=h2bbff1b_0
@@ -91,12 +92,14 @@ dependencies:
   - pandocfilters=1.4.3=py39haa95532_1
   - parso=0.7.0=py_0
   - partd=1.2.0=pyhd3eb1b0_0
+  - pexpect=4.8.0=pyhd3eb1b0_3
   - pickleshare=0.7.5=pyhd3eb1b0_1003
   - pillow=8.3.1=py39h4fa10fc_0
   - pip=21.1.3=py39haa95532_0
   - prometheus_client=0.11.0=pyhd3eb1b0_0
   - prompt-toolkit=3.0.17=pyh06a4308_0
   - prompt_toolkit=3.0.17=hd3eb1b0_0
+  - ptyprocess=0.7.0=pyhd3eb1b0_2
   - pycparser=2.20=py_2
   - pygments=2.9.0=pyhd3eb1b0_0
   - pyparsing=2.4.7=pyhd3eb1b0_0
@@ -145,4 +148,6 @@ dependencies:
   - zipp=3.5.0=pyhd3eb1b0_0
   - zlib=1.2.11=h62dcd97_4
   - zstd=1.4.9=h19a0ad4_0
-prefix: C:\Users\nitin\miniconda3\envs\fyp_env
+  - pip:
+    - opencv-python==4.5.3.56
+prefix: C:\Users\Usama\Anaconda3\envs\fyp_env
