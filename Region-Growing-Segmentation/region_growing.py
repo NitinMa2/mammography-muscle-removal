@@ -15,15 +15,17 @@ def run_region_growing_on_image(image_path):
     region_growing(image_data_post_smoothing, segmentation_name=image_name + " segmentation", neighbours=CONN)
 
 
-def region_growing(image_data, neighbours, threshold=20, segmentation_name="Region Growing"):
-    region_growing = Region_Growing(image_data, threshold=threshold, conn=neighbours)
-    # Set Seeds
-    # region_growing.set_seeds()
-    # Segmentation
-    region_growing.segment()
-    # Display Segmentation
-    region_growing.display_and_resegment(name=segmentation_name)
-
+def region_growing(image_data, neighbours, threshold=60, segmentation_name="Region Growing"):
+    thresholds = [60, 40, 30, 20]
+    for i in thresholds:
+        region_growing = Region_Growing(image_data, threshold=i, conn=neighbours)
+        result = region_growing.segment()
+        if isinstance(result, int):
+            continue
+        else:
+            region_growing.display_and_resegment(name=segmentation_name)
+            print(i)
+            break
 
 def get_image_data(image_path):
     name, ext = os.path.splitext(image_path)
@@ -71,7 +73,7 @@ def set_cmd_line_arguments():
 
 DICOM_IMAGE_EXT = '.dcm'
 OTHER_IMAGE_EXT = ['.jpg', '.png', '.jpeg', '.pgm']
-IMAGE_PATH = "mdb022.png"
+IMAGE_PATH = "mdb023.png"
 # Default image path
 CONN = 4
 

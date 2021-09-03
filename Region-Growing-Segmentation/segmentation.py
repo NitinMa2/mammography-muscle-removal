@@ -1,9 +1,7 @@
 import sys
 import cv2
 import numpy as np
-
-SAVE = 's'
-ESC_KEY = 27
+import time
 
 class Region_Growing():
 
@@ -11,7 +9,7 @@ class Region_Growing():
         self.img = img
         self.segmentation = np.zeros(img.shape)
         self.threshold = threshold
-        self.seeds = [(5, 8), (1,1)]
+        self.seeds = [(1,1)]
         if conn==4:
             self.orientations = [(1,0),(0,1),(-1,0),(0,-1)]
         elif conn == 8:
@@ -37,14 +35,16 @@ class Region_Growing():
         Segment the image with the provided user seeds using region growing
         """
         for seed in self.seeds:
-            print(self.seeds)
             curr_pixel = [seed[1],seed[0]]
             if self.segmentation[curr_pixel[0], curr_pixel[1]]==255: continue # pixel already explored
             contour = []
             seg_size = 1
             mean_seg_value = (self.img[curr_pixel[0],curr_pixel[1]])
             dist = 0
+            timeout = time.time() + 10
             while(dist<self.threshold):
+                if time.time() > timeout:
+                    return 0
                 # Include current pixel in segmentation
                 self.segmentation[curr_pixel[0], curr_pixel[1]]=255
                 # Explore neighbours of current pixel
@@ -79,7 +79,7 @@ class Region_Growing():
         key = cv2.waitKey(0)
         cv2.destroyAllWindows()
         # Press "s" to save the segmented result
-        cv2.imwrite(name+'.png', result)
+        cv2.imwrite(name+" t = "+str(self.threshold)+'.png', result)
         # Press "Esc" to if no more seeds are required and end the program
 
     def __explore_neighbours(self, contour, current_pixel):
