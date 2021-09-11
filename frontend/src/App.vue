@@ -24,7 +24,7 @@
             <label for="original">Original</label>
             <div class="tab__content">
                 <div class="tab__image">
-                    <img src="@/assets/placeholder.png" />
+                    <img src="./assets/placeholder.png" />
                 </div>
                 <div class="tab__actions">
                     <div class="tab__actions--buttons">
@@ -55,7 +55,7 @@
             <label for="segmented">Segmented</label>
             <div class="tab__content">
                 <div class="tab__image">
-                    <img src="@/assets/placeholder2.png" />
+                    <img src="./assets/placeholder2.png" />
                 </div>
                 <div class="tab__actions">
                     <div class="tab__actions--buttons">
