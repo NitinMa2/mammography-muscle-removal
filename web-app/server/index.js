@@ -3,7 +3,7 @@ const cors = require("cors"); // allows the client to communicate with the serve
 // const bodyParser = require("body-parser"); // to allow the server to read the data sent from the client
 const morgan = require("morgan"); // used to log http requests to the console
 
-// const path = require("path"); // for relative paths
+const path = require("path"); // for relative paths
 
 const port = process.env.PORT || 5000; // use port specified by system or fallback to 8080
 const app = express(); // instantiate server
