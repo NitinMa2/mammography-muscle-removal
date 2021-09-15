@@ -100,6 +100,7 @@ export default {
 
             // this.funFact = data.fact;
             try {
+                await SegmentationService.postDocument();
                 this.funFact = await SegmentationService.getDocuments();
             } catch (err) {
                 console.log(err);

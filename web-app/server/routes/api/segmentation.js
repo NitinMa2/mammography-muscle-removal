@@ -1,5 +1,6 @@
 const express = require("express"); // express server
 const { MongoClient } = require("mongodb"); // mongodb
+require("dotenv").config(); // for accessing env variables
 
 const router = express.Router();
 
@@ -13,23 +14,25 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
     const segmentation = await loadSegmentationCollection();
     await segmentation.insertOne({
-        text: req.body.text,
+        text: req.body.text || "Test Text",
         createdAt: new Date(),
     });
     res.status(201).send();
 });
 
 async function loadSegmentationCollection() {
-    const uri =
-        "mongodb+srv://admin:adminFYP2021@cluster0.banxa.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+    const uri = `${process.env.VUE_APP_MONGO_URI}`;
 
-    const dbName = "test";
-    const colName = "people";
+    const dbName = "test_db";
+    const colName = "test_col";
 
+    // connect to Mongo client
     const client = await MongoClient.connect(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
+
+    if (client) console.log("Successfully connected to DB.");
 
     return client.db(dbName).collection(colName);
 }
