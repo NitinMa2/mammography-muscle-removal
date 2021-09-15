@@ -90,8 +90,8 @@ export default {
         tab() {
             this.imageSource =
                 this.tab === 0
-                    ? require("@/assets/placeholder.png")
-                    : require("@/assets/placeholder2.png");
+                    ? require("../assets/placeholder.png")
+                    : require("../assets/placeholder2.png");
         },
     },
 };
