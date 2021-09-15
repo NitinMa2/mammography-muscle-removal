@@ -13,9 +13,12 @@
                         <div class="tab__image">
                             <img
                                 v-if="tab === 0"
-                                src="@/assets/placeholder.png"
+                                src="https://play-lh.googleusercontent.com/IeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3"
                             />
-                            <img v-else src="@/assets/placeholder2.png" />
+                            <img
+                                v-else
+                                src="https://pbs.twimg.com/profile_images/1285655593592791040/HtwPZgej.jpg"
+                            />
                         </div>
                         <div class="tab__actions">
                             <div class="tab__actions--buttons">
