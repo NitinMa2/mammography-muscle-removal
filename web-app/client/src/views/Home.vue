@@ -8,7 +8,7 @@
             <v-btn
                 :loading="uploadLoading"
                 :disabled="uploadLoading"
-                color="teal darken-1"
+                color="primary"
                 class="ma-2 white--text"
                 @click="handleUpload"
             >

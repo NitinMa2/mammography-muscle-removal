@@ -33,6 +33,10 @@ h1 {
     margin: 30px auto;
 }
 
+.v-application {
+    background-color: rgb(245, 245, 245) !important;
+}
+
 /* ------ */
 /* Upload */
 /* ------ */

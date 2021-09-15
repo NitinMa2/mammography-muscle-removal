@@ -19,7 +19,7 @@
                         <v-btn
                             :loading="downloadLoading"
                             :disabled="downloadLoading"
-                            color="teal darken-1"
+                            color="primary"
                             class="ma-2 white--text"
                         >
                             Download Output
@@ -31,7 +31,7 @@
                         <v-btn
                             :loading="emailLoading"
                             :disabled="emailLoading"
-                            color="teal darken-1"
+                            color="primary"
                             class="ma-2 white--text"
                         >
                             Email Output
@@ -64,7 +64,7 @@
                         <v-btn
                             :loading="downloadLoading"
                             :disabled="downloadLoading"
-                            color="teal darken-1"
+                            color="primary"
                             class="ma-2 white--text"
                         >
                             Download Output
@@ -76,7 +76,7 @@
                         <v-btn
                             :loading="emailLoading"
                             :disabled="emailLoading"
-                            color="teal darken-1"
+                            color="primary"
                             class="ma-2 white--text"
                         >
                             Email Output
