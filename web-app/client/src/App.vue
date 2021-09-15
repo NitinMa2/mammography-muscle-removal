@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import SegmentationService from "@/SegmentationService";
 export default {
     name: "App",
 
@@ -93,10 +94,16 @@ export default {
     }),
     methods: {
         async handleUpload() {
-            let response = await fetch("https://catfact.ninja/fact");
-            let data = await response.json();
+            // url = "https://catfact.ninja/fact"
+            // let response = await fetch(url);
+            // let data = await response.json();
 
-            this.funFact = data.fact;
+            // this.funFact = data.fact;
+            try {
+                this.funFact = await SegmentationService.getDocuments();
+            } catch (err) {
+                console.log(err);
+            }
         },
     },
 };

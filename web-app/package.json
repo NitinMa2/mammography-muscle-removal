@@ -3,13 +3,12 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "serve": "vue-cli-service serve",
-        "build": "vue-cli-service build",
-        "lint": "vue-cli-service lint",
-        "start": "node server/index.js",
-        "dev": "nodemon server/index.js"
+        "dev": "concurrently \"cd client && vue-cli-service serve\" \"nodemon server/index.js\"",
+        "build": "cd client && vue-cli-service build",
+        "start": "node server/index.js"
     },
     "dependencies": {
+        "axios": "^0.21.4",
         "core-js": "^3.6.5",
         "cors": "^2.8.5",
         "express": "^4.17.1",
@@ -27,6 +26,7 @@
         "@vue/cli-plugin-vuex": "~4.5.0",
         "@vue/cli-service": "~4.5.0",
         "babel-eslint": "^10.1.0",
+        "concurrently": "^6.2.1",
         "eslint": "^6.7.2",
         "eslint-plugin-vue": "^6.2.2",
         "node-sass": "^4.12.0",
