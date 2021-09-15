@@ -17,6 +17,13 @@
                     mdi-cloud-upload
                 </v-icon>
             </v-btn>
+            <input
+                type="file"
+                style="display: none"
+                ref="imageInput"
+                accept="image/*"
+                @change="onImageSelected"
+            />
             <p v-if="funFact.length != 0" id="fact">{{ funFact }}</p>
         </div>
         <Tabs />
@@ -47,11 +54,30 @@ export default {
             // this.funFact = data.fact;
             try {
                 this.loader = "uploadLoading";
-                await SegmentationService.postDocument();
+                this.$refs.imageInput.click();
+
+                // await SegmentationService.postDocument();
                 this.funFact = await SegmentationService.getDocuments();
             } catch (err) {
                 console.log(err);
             }
+        },
+        onImageSelected(event) {
+            // https://www.youtube.com/watch?v=J2Wp4_XRsWc
+            const image = event.target.files[0];
+            let imagename = image.name;
+            // validation
+            if (imagename.lastIndexOf(".") <= 0) {
+                return alert("Please enter a vaild file");
+            }
+            const fileReader = new FileReader();
+            fileReader.addEventListener("load", () => {
+                // this.imageUrl = fileReader.result;
+                console.log(fileReader.result);
+            });
+            fileReader.readAsDataURL(image);
+            // this.image = image;
+            console.log(image);
         },
     },
     watch: {
