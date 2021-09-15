@@ -13,12 +13,9 @@
                         <div class="tab__image">
                             <img
                                 v-if="tab === 0"
-                                :src="require('@/assets/placeholder.png')"
+                                src="@/assets/placeholder.png"
                             />
-                            <img
-                                v-else
-                                :src="require('@/assets/placeholder2.png')"
-                            />
+                            <img v-else src="@/assets/placeholder2.png" />
                         </div>
                         <div class="tab__actions">
                             <div class="tab__actions--buttons">

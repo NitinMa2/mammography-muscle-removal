@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@/views/Home.vue";
 import Team from "@/views/Team.vue";
+import API from "@/views/API.vue";
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,11 @@ const routes = [
         path: "/team",
         name: "Team",
         component: Team,
+    },
+    {
+        path: "/api-reference",
+        name: "API",
+        component: API,
     },
 ];
 

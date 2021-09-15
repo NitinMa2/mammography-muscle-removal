@@ -32,6 +32,12 @@
                 </v-list-item-icon>
                 <v-list-item-title>Meet The Team</v-list-item-title>
             </v-list-item>
+            <v-list-item link :to="{ name: 'API' }">
+                <v-list-item-icon>
+                    <v-icon>mdi-api</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>API Reference</v-list-item-title>
+            </v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>
