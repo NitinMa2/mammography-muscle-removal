@@ -12,11 +12,12 @@
                     <v-card class="d-flex justify-space-around pa-14" flat>
                         <div class="tab__image">
                             <img
-                                :src="
-                                    tab === 0
-                                        ? require('@/assets/placeholder.png')
-                                        : require('@/assets/placeholder2.png')
-                                "
+                                v-if="tab === 0"
+                                :src="require('@/assets/placeholder.png')"
+                            />
+                            <img
+                                v-else
+                                :src="require('@/assets/placeholder2.png')"
                             />
                         </div>
                         <div class="tab__actions">
