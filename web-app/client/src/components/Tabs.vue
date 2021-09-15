@@ -11,7 +11,13 @@
                 <v-tab-item v-for="item in items" :key="item">
                     <v-card class="d-flex justify-space-around pa-14" flat>
                         <div class="tab__image">
-                            <img :src="imageSource" />
+                            <img
+                                :src="
+                                    tab === 0
+                                        ? require('@/assets/placeholder.png')
+                                        : require('@/assets/placeholder2.png')
+                                "
+                            />
                         </div>
                         <div class="tab__actions">
                             <div class="tab__actions--buttons">
@@ -86,12 +92,6 @@ export default {
             setTimeout(() => (this[l] = false), 3000);
 
             this.loader = null;
-        },
-        tab() {
-            this.imageSource =
-                this.tab === 0
-                    ? require("../assets/placeholder.png")
-                    : require("../assets/placeholder2.png");
         },
     },
 };
