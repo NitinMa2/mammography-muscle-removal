@@ -73,7 +73,7 @@ def set_cmd_line_arguments():
 
 DICOM_IMAGE_EXT = '.dcm'
 OTHER_IMAGE_EXT = ['.jpg', '.png', '.jpeg', '.pgm']
-IMAGE_PATH = "mdb0011.png"
+IMAGE_PATH = "mdb001.png"
 # Default image path
 CONN = 4
 
