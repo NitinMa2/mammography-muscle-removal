@@ -7,8 +7,9 @@ Final Year Project aimed to detect and remove the pectoral muscle region from ma
 ## Prerequisites
 
 -   [Miniconda](https://docs.conda.io/en/latest/miniconda.html) (preferred) or [Anaconda](https://www.anaconda.com/products/individual) (for MacOS)
+-   [Node.js](https://nodejs.org/en/download/)
 
-## Setup
+## Jupyter Setup
 
 ### For Windows Users
 
@@ -35,7 +36,7 @@ The environment should now contain the following libraries:
 
 Use conda through the **Terminal** and use the default Anaconda environment.
 
-## Activating the Environment
+## Activating the Python Environment
 
 You will always need to ensure you are working on the right environment. To activate the environment, run:
 
@@ -43,7 +44,7 @@ You will always need to ensure you are working on the right environment. To acti
 conda activate fyp_env
 ```
 
-## Updating the Environment
+## Updating the Python Environment
 
 To add/remove a library to the environment, refer to the following commands:
 
@@ -71,6 +72,31 @@ To run the jupyter notebook on your localhost, run this command from the project
 ```bash
 jupyter notebook
 ```
+
+## Web App Setup
+
+The web app lives in the `web-app` directory. We need to first install the node dependencies.
+
+```bash
+cd web-app
+npm install
+```
+
+In order to be able to connect with the MongoDB instance, you will need to add the uri to a `web-app/.env` file. Add the content of the `.env` file:
+
+```
+VUE_APP_MONGO_URI=<your_uri>
+```
+
+## Starting the Web App in localhost
+
+To start the client and server in localhost from the `web-app` directory, run:
+
+```bash
+npm run dev
+```
+
+You can then access the app through http://localhost:8080 .
 
 # Contributing Guidelines
 
