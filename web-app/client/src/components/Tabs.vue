@@ -134,6 +134,4 @@ export default {
     align-items: center;
     margin-top: 20px;
 }
-@media (max-width: 992px) {
-}
 </style>

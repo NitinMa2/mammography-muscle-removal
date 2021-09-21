@@ -48,4 +48,20 @@ h1 {
     margin: 30px auto 0 auto;
     max-width: 600px;
 }
+/* --------------------- */
+/* Responsive Typography */
+/* --------------------- */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 5vw;
+    }
+}
+@media (max-width: 470px) {
+    h1 {
+        font-size: 6.5vw;
+    }
+    .v-btn__content {
+        font-size: 11px;
+    }
+}
 </style>
