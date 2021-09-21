@@ -1,7 +1,13 @@
 <template>
     <v-container>
         <v-card>
-            <v-tabs v-model="tab" background-color="transparent" grow>
+            <v-tabs
+                v-model="tab"
+                background-color="transparent"
+                grow
+                show-arrows
+            >
+                <v-tabs-slider color="teal lighten-3"></v-tabs-slider>
                 <v-tab v-for="item in items" :key="item">
                     {{ item }}
                 </v-tab>
@@ -9,8 +15,11 @@
 
             <v-tabs-items v-model="tab">
                 <v-tab-item v-for="item in items" :key="item">
-                    <v-card class="d-flex justify-space-around pa-14" flat>
-                        <div class="tab__image">
+                    <v-card
+                        class="d-flex flex-column flex-md-row justify-space-around pa-4 pa-sm-14"
+                        flat
+                    >
+                        <div class="tab__image text-center">
                             <img
                                 v-if="tab === 0"
                                 src="https://play-lh.googleusercontent.com/IeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3"
@@ -46,24 +55,28 @@
                                     </v-icon>
                                 </v-btn>
                             </div>
-                            <div class="tab__actions--rate">
-                                <p class="mr-2">Rate this result:</p>
-                                <v-btn
-                                    class="mt-n3"
-                                    text
-                                    icon
-                                    color="blue lighten-2"
-                                >
-                                    <v-icon>mdi-thumb-up</v-icon>
-                                </v-btn>
-                                <v-btn
-                                    class="mt-n3"
-                                    text
-                                    icon
-                                    color="red lighten-2"
-                                >
-                                    <v-icon>mdi-thumb-down</v-icon>
-                                </v-btn>
+                            <div
+                                class="tab__actions--rate d-flex flex-column flex-sm-row"
+                            >
+                                <p class="mr-sm-2">Rate this result:</p>
+                                <div>
+                                    <v-btn
+                                        class="mt-n3"
+                                        text
+                                        icon
+                                        color="blue lighten-2"
+                                    >
+                                        <v-icon>mdi-thumb-up</v-icon>
+                                    </v-btn>
+                                    <v-btn
+                                        class="mt-n3"
+                                        text
+                                        icon
+                                        color="red lighten-2"
+                                    >
+                                        <v-icon>mdi-thumb-down</v-icon>
+                                    </v-btn>
+                                </div>
                             </div>
                         </div>
                     </v-card>
@@ -104,6 +117,7 @@ export default {
 /* ----------- */
 .tab__image img {
     max-width: 300px;
+    width: 80%;
 }
 .tab__actions {
     display: flex;
@@ -119,5 +133,7 @@ export default {
     display: flex;
     align-items: center;
     margin-top: 20px;
+}
+@media (max-width: 992px) {
 }
 </style>
