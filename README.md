@@ -31,6 +31,7 @@ The environment should now contain the following libraries:
 -   Seaborn
 -   Scikit-image
 -   OpenCV-Python
+- 	pydicom
 
 ### For MacOS Users
 
