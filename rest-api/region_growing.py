@@ -1,9 +1,7 @@
 # To add a new cell, type '# %%'
 # To add a new markdown cell, type '# %% [markdown]'
-# %% [markdown]
+
 # ## Import Libraries
-
-
 import base64
 import sys
 from io import BytesIO
@@ -12,7 +10,6 @@ import numpy as np
 from PIL import ImageEnhance, Image
 
 
-# %% [markdown]
 # ## Preprocessing
 # 1. Left align 
 # 2. Perform contrast
@@ -40,10 +37,9 @@ def left_align(img):
     pixels = np.asarray(img)
     if np.mean(pixels[0:256, 0:128]) < np.mean(pixels[0:256, 128:256]):
         return pixels[:, ::-1]
-    return pixels 
+    return pixels
 
 
-# %%
 def perform_contrast(img):
     """
     Adjusts the contrast of the given image by a specific factor.
@@ -56,12 +52,11 @@ def perform_contrast(img):
         PIL image with the contrast adjusted.
     """
     enhancer = ImageEnhance.Contrast(img)
-    factor = 1.3 #increase contrast
+    factor = 1.3  # increase contrast
     img = enhancer.enhance(factor)
-    return img 
+    return img
 
 
-# %%
 def remove_bar(img):
     """
     Finds the width of the black bar on the left of the image by checking iteratively until a pixel whose value is greater than
@@ -97,20 +92,25 @@ def preprocess_image(img):
     Returns:
         PIL image ready for the level set algorithm.
     """
-    img = img.resize((256,256))
+    img = img.resize((256, 256))
     img = left_align(img)
     img = remove_bar(img)
     img = np.interp(img, [np.min(img), np.max(img)], [0, 255])
     return img
 
+
 # Region Growing Algorithm
+def is_pixel_inside_image(pixel, img_shape):
+    return 0 <= pixel[0] < img_shape[0] and 0 <= pixel[1] < img_shape[1]
+
+
 class Region_Growing():
     def __init__(self, img, max_iter, threshold, conn=4):
         self.img = img
         self.segmentation = np.empty(shape=img.shape)
         self.segmentation.fill(255)
         self.max_iter_to_change_threshold = max_iter
-        
+
         self.threshold = threshold
         self.seeds = [(1, 1)]
         if conn == 4:
@@ -143,7 +143,7 @@ class Region_Growing():
                 # Get the nearest neighbour
                 nearest_neighbour_idx, dist = self.__get_nearest_neighbour(contour, mean_seg_value)
                 # If no more neighbours to grow, move to the next seed
-                if nearest_neighbour_idx == -1 : break
+                if nearest_neighbour_idx == -1: break
                 # Update Current pixel to the nearest neighbour and increment size
                 curr_pixel = contour[nearest_neighbour_idx]
                 seg_size += 1
@@ -159,7 +159,7 @@ class Region_Growing():
         # Display original image where segmentation was not done
         result = np.minimum(self.img, self.segmentation)
         result = np.array(result, dtype=np.uint8)
-        
+
         # Display the result
         return result
 
@@ -171,11 +171,11 @@ class Region_Growing():
             if self.segmentation[neighbour[0], neighbour[1]] == 255:
                 contour.append(neighbour)
                 self.segmentation[neighbour[0], neighbour[1]] = 150
-        return contour 
+        return contour
 
     def __get_neighbouring_pixel(self, current_pixel, orient, img_shape):
         neighbour = (current_pixel[0] + orient[0], current_pixel[1] + orient[1])
-        if self.is_pixel_inside_image(pixel=neighbour, img_shape=img_shape):
+        if is_pixel_inside_image(pixel=neighbour, img_shape=img_shape):
             return neighbour
         else:
             return None
@@ -187,16 +187,6 @@ class Region_Growing():
         index = dist_list.index(min_dist)
         return index, min_dist
 
-    def is_pixel_inside_image(self, pixel, img_shape):
-        return 0 <= pixel[0] < img_shape[0] and 0 <= pixel[1] < img_shape[1]
-
-
-# %%
-#Global variables
-DICOM_IMAGE_EXT = '.dcm'
-PGM_IMAGE_EXT = '.pgm'
-OTHER_IMAGE_EXT = ['.jpg', '.png', '.jpeg']
-
 
 def region_growing(image_data, max_iter, neighbours, segmentation_name="Region Growing"):
     thresholds = [60, 40, 30, 20, 10, 5, 2.5]
@@ -206,7 +196,6 @@ def region_growing(image_data, max_iter, neighbours, segmentation_name="Region G
         if isinstance(result, int):
             continue
         else:
-            print("Threshold used:" + str(i))
             return region_growing.display_and_resegment(name=segmentation_name)
 
 
@@ -226,9 +215,11 @@ def run_region_growing_on_image(image_base64):
     _, imagebytes = cv2.imencode('.png', segmented_img)
     base64_segmented = base64.b64encode(imagebytes)
     print(base64_segmented)
+    base64_segmented
     return base64_segmented
 
 
+# testing function only the api will call run_region_growing_on_image with base64 image
 def img2string(path):
     with open(path, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
