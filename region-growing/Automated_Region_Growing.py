@@ -1,24 +1,34 @@
-# To add a new cell, type '# %%'
-# To add a new markdown cell, type '# %% [markdown]'
-# %% [markdown]
+#!/usr/bin/env python
+# coding: utf-8
+
 # ## Import Libraries
 
+# In[1]:
 
-import base64
+
 import sys
-from io import BytesIO
 import cv2
 import numpy as np
-from PIL import ImageEnhance, Image
+import pydicom
+import os, sys, getopt
+import matplotlib.pyplot as plt
+from PIL import Image, ImageEnhance
+import math
 
 
-# %% [markdown]
+# In[2]:
+
+
+# setting the directory of our dataset
+DATASET_DIR = "dataset/mias/all-mias/"
+
+
 # ## Preprocessing
 # 1. Left align 
 # 2. Perform contrast
 # 3. Remove bar 
 
-# %%
+# In[3]:
 
 
 def left_align(img):
@@ -43,7 +53,9 @@ def left_align(img):
     return pixels 
 
 
-# %%
+# In[4]:
+
+
 def perform_contrast(img):
     """
     Adjusts the contrast of the given image by a specific factor.
@@ -55,13 +67,16 @@ def perform_contrast(img):
     Returns:
         PIL image with the contrast adjusted.
     """
+    print(img)
     enhancer = ImageEnhance.Contrast(img)
-    factor = 1.3 #increase contrast
+    factor = 1.3#increase contrast
     img = enhancer.enhance(factor)
     return img 
 
 
-# %%
+# In[5]:
+
+
 def remove_bar(img):
     """
     Finds the width of the black bar on the left of the image by checking iteratively until a pixel whose value is greater than
@@ -82,6 +97,9 @@ def remove_bar(img):
     return img[:, width:256]
 
 
+# In[6]:
+
+
 def preprocess_image(img):
     """
     Combines all of the above preprocessing steps together on a given image.
@@ -92,7 +110,7 @@ def preprocess_image(img):
         - There is no blank space at the top of the image (not even 1px).
         - We want to optimize for speed over precision.
         - The input image is LCC view.
-        - The half of the image on which the majority of the breast region lies has a higher mean than the other half.
+        - The half of the image on which the majority of the breast region lies has a higher mean than the othe half.
         
     Returns:
         PIL image ready for the level set algorithm.
@@ -103,8 +121,14 @@ def preprocess_image(img):
     img = np.interp(img, [np.min(img), np.max(img)], [0, 255])
     return img
 
-# Region Growing Algorithm
+
+# ## Region Growing Algorithm
+
+# In[7]:
+
+
 class Region_Growing():
+
     def __init__(self, img, max_iter, threshold, conn=4):
         self.img = img
         self.segmentation = np.empty(shape=img.shape)
@@ -118,7 +142,7 @@ class Region_Growing():
         elif conn == 8:
             self.orientations = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]  # 8 connectivity
         else:
-            raise ValueError("(%s) Connectivity type not known (4 or 8 available)!" % sys._getframe.f_code.co_name)
+            raise ValueError("(%s) Connectivity type not known (4 or 8 available)!" % (sys._getframe().f_code.co_name))
 
     def segment(self):
         """
@@ -191,15 +215,40 @@ class Region_Growing():
         return 0 <= pixel[0] < img_shape[0] and 0 <= pixel[1] < img_shape[1]
 
 
-# %%
+# In[8]:
+
+
 #Global variables
 DICOM_IMAGE_EXT = '.dcm'
 PGM_IMAGE_EXT = '.pgm'
 OTHER_IMAGE_EXT = ['.jpg', '.png', '.jpeg']
+CONN = 4
+
+
+# In[9]:
+
+
+def preprocessing(image_path):
+    original_image_data, image_name = handle_different_file_extensions(image_path)
+    contrasted_img = perform_contrast(original_image_data)
+    processed_img = preprocess_image(contrasted_img)
+    return image_name, processed_img, processed_img
+
+
+# In[10]:
+
+
+def run_region_growing_on_image(image_path, max_iter):
+    image_name, original_image, preprocessed_image = preprocessing(image_path)
+    segmented_img = region_growing(preprocessed_image, max_iter, segmentation_name=image_name + " segmentation", neighbours=CONN)
+    return original_image, segmented_img
+
+
+# In[11]:
 
 
 def region_growing(image_data, max_iter, neighbours, segmentation_name="Region Growing"):
-    thresholds = [60, 40, 30, 20, 10, 5, 2.5]
+    thresholds = [60, 40, 30, 10, 5, 2.5]
     for i in thresholds:
         region_growing = Region_Growing(image_data, max_iter, threshold=i, conn=neighbours)
         result = region_growing.segment()
@@ -210,29 +259,59 @@ def region_growing(image_data, max_iter, neighbours, segmentation_name="Region G
             return region_growing.display_and_resegment(name=segmentation_name)
 
 
-def preprocessing(image_base64):
-    contrasted_img = perform_contrast(image_base64)
-    processed_img = preprocess_image(contrasted_img)
-    return processed_img
+# In[12]:
 
 
-def run_region_growing_on_image(image_base64):
-    im_bytes = base64.b64decode(image_base64)  # im_bytes is a binary image
-    im_file = BytesIO(im_bytes)
-    image = Image.open(im_file)
-    image = image.convert("L")
-    preprocessed_image = preprocessing(image)
-    segmented_img = region_growing(preprocessed_image, 6200, neighbours=4)
-    _, imagebytes = cv2.imencode('.png', segmented_img)
-    base64_segmented = base64.b64encode(imagebytes)
-    print(base64_segmented)
-    return base64_segmented
+def handle_different_file_extensions(image_path):
+    name, ext = os.path.splitext(image_path)
+    if ext == DICOM_IMAGE_EXT:
+        return (pydicom.read_file(image_path).pixel_array, name)
+    elif ext == PGM_IMAGE_EXT:
+        return (Image.open(image_path), name)
+    elif ext in OTHER_IMAGE_EXT:
+        return (cv2.imread(image_path, 0), name)
+    else:
+        print("Invalid Image Format. Supported Image Formats are: {}, {}".format(DICOM_IMAGE_EXT, OTHER_IMAGE_EXT))
+        sys.exit()
 
 
-def img2string(path):
-    with open(path, "rb") as image_file:
-        encoded_string = base64.b64encode(image_file.read())
-        run_region_growing_on_image(encoded_string)
+# In[13]:
 
 
-img2string("mdb013.png")
+def run_region_growing_and_plot(starting_index, ending_index, max_iter):
+    ## Contains a list of tuple, each tuple (original image, modified image)
+    original_and_modified_images = []
+#     class_1 = [17,18,50,51,57,60,65,66,67,68,88,89,90,95,123,146,156,161,165]
+    for i in range(starting_index, ending_index + 1):
+        file_number = str(i).zfill(3)
+        file_name = "mdb" + file_number + ".pgm"
+        file_path = DATASET_DIR + file_name
+        result = run_region_growing_on_image(file_path, max_iter)
+        original_and_modified_images.append(result)
+        print(file_name + " has been segmented")
+    counter = 0
+    x_axis = 0
+    fig, ax = plt.subplots(nrows=int((ending_index - starting_index)/2) + 1 ,ncols=4, figsize=(12.5,12.5))
+#     fig, ax = plt.subplots(nrows=10,ncols=4, figsize=(12.5,12.5))
+    for original_img, img in original_and_modified_images:
+        y_axis= math.floor(counter)
+        ax[y_axis, x_axis].axis('off')
+        ax[y_axis, x_axis].imshow(original_img)
+        x_axis += 1
+        ax[y_axis, x_axis].axis('off')
+        ax[y_axis, x_axis].imshow(img)
+        x_axis +=1 
+        if x_axis > 3:
+            x_axis = 0
+        counter += 0.5
+
+
+# In[14]:
+
+
+print("Key in any integer without padding (eg, 1 for 001)")
+sp = int(input("Starting from mdb_ _ _:"))
+ep = int(input("Until mdb_ _ _:"))
+print("Wait for your result!")
+run_region_growing_and_plot(sp,ep,6200)
+
