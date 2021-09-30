@@ -4,3 +4,5 @@ output/
 .ipynb_checkpoints
 .DS_Store
 *.png
+.idea
+__pycache__
