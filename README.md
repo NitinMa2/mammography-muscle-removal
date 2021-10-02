@@ -74,6 +74,19 @@ To run the jupyter notebook on your localhost, run this command from the project
 ```bash
 jupyter notebook
 ```
+## Segmentation API Documentation
+
+Only Valid API method is POST and only valid endpoint is Segment
+This Post Method with segment endpoint takes in a base64 encoded image in string format and gives a json response with the segmented image in base64 encoded string.
+
+A valid API call example will look like
+```
+{api_url}/segment/{base64_string}
+```
+with response
+```
+{"Segmented" : "base_64_image_string"}
+```
 
 ## Web App Setup
 
