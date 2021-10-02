@@ -10,9 +10,12 @@
             <v-list-item>
                 <v-list-item-content>
                     <v-list-item-title class="text-h6">
-                        Title
+                        Pectoral Muscle
                     </v-list-item-title>
-                    <v-list-item-subtitle>Subtitle</v-list-item-subtitle>
+                    <v-list-item-title class="text-h6">
+                        Removal
+                    </v-list-item-title>
+                    <v-list-item-subtitle>Team 02</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
         </v-list>
