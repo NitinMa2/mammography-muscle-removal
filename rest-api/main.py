@@ -6,7 +6,6 @@ from flask import abort, jsonify
 
 '''
 Pectoral Muscle Segmentation API
-Pectoral Muscle Segmentation API
 
 Valid Methods = POST
 Valid Endpoint = Segment
@@ -78,6 +77,3 @@ def isBase64(sb):
 
 if __name__ == '__main__':
     app.run(debug=False)
-
-# https://jdhao.github.io/2020/04/12/build_webapi_with_flask_s2/
-# https://python.plainenglish.io/how-to-send-images-into-flask-api-via-url-7d4be51e8130
