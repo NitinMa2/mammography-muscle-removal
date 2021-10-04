@@ -7,8 +7,7 @@
         <div class="div__upload">
             <v-btn
                 :loading="uploadLoading"
-                disabled
-                depressed
+                :disabled="uploadLoading"
                 color="primary"
                 class="ma-2 white--text"
                 @click="handleUpload"
@@ -25,9 +24,9 @@
                 accept="image/*"
                 @change="onImageSelected"
             />
-            <p v-if="funFact.length != 0" id="fact">{{ funFact }}</p>
+            <!-- <p v-if="funFact.length != 0" id="fact">{{ funFact }}</p> -->
         </div>
-        <Tabs v-if="false" />
+        <Tabs v-if="originalImageSrc.length" />
     </v-container>
 </template>
 
@@ -42,10 +41,15 @@ export default {
         Tabs,
     },
     data: () => ({
-        funFact: "Feature Under Construction",
+        funFact: "Fun Fact API",
         loader: null,
         uploadLoading: false,
     }),
+    computed: {
+        originalImageSrc() {
+            return this.$store.state.originalImageSrc;
+        },
+    },
     methods: {
         async handleUpload() {
             // url = "https://catfact.ninja/fact"
@@ -58,7 +62,7 @@ export default {
                 this.$refs.imageInput.click();
 
                 // await SegmentationService.postDocument();
-                this.funFact = await SegmentationService.getDocuments();
+                // this.funFact = await SegmentationService.getDocuments();
             } catch (err) {
                 console.log(err);
             }
@@ -72,13 +76,14 @@ export default {
                 return alert("Please enter a vaild file");
             }
             const fileReader = new FileReader();
+            fileReader.readAsDataURL(image);
             fileReader.addEventListener("load", () => {
                 // this.imageUrl = fileReader.result;
-                console.log(fileReader.result);
+                // console.log(fileReader.result);
+                this.$store.commit("setOriginalImageSrc", fileReader.result);
+                this.$store.commit("setSegmentedImageSrc", fileReader.result);
             });
-            fileReader.readAsDataURL(image);
-            // this.image = image;
-            console.log(image);
+            // console.log(image);
         },
     },
     watch: {

@@ -20,20 +20,14 @@
                         flat
                     >
                         <div class="tab__image text-center">
-                            <img
-                                v-if="tab === 0"
-                                src="https://play-lh.googleusercontent.com/IeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3"
-                            />
-                            <img
-                                v-else
-                                src="https://pbs.twimg.com/profile_images/1285655593592791040/HtwPZgej.jpg"
-                            />
+                            <img v-if="tab === 0" :src="originalImageSrc" />
+                            <img v-else :src="segmentedImageSrc" />
                         </div>
                         <div class="tab__actions">
                             <div class="tab__actions--buttons">
                                 <v-btn
                                     :loading="downloadLoading"
-                                    :disabled="downloadLoading"
+                                    :disabled="downloadLoading || true"
                                     color="primary"
                                     class="ma-2 white--text"
                                 >
@@ -45,7 +39,7 @@
 
                                 <v-btn
                                     :loading="emailLoading"
-                                    :disabled="emailLoading"
+                                    :disabled="emailLoading || true"
                                     color="primary"
                                     class="ma-2 white--text"
                                 >
@@ -98,6 +92,14 @@ export default {
         items: ["Original", "Segmented"],
         imageSource: "",
     }),
+    computed: {
+        originalImageSrc() {
+            return this.$store.state.originalImageSrc;
+        },
+        segmentedImageSrc() {
+            return this.$store.state.segmentedImageSrc;
+        },
+    },
     watch: {
         loader() {
             const l = this.loader;
