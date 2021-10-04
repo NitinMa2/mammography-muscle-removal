@@ -33,7 +33,7 @@
                 <v-list-item-icon>
                     <v-icon>mdi-account-group</v-icon>
                 </v-list-item-icon>
-                <v-list-item-title>Meet The Team</v-list-item-title>
+                <v-list-item-title>About us</v-list-item-title>
             </v-list-item>
             <v-list-item link :to="{ name: 'API' }">
                 <v-list-item-icon>
