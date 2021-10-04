@@ -7,7 +7,8 @@
         <div class="div__upload">
             <v-btn
                 :loading="uploadLoading"
-                :disabled="uploadLoading"
+                disabled
+                depressed
                 color="primary"
                 class="ma-2 white--text"
                 @click="handleUpload"
@@ -26,7 +27,7 @@
             />
             <p v-if="funFact.length != 0" id="fact">{{ funFact }}</p>
         </div>
-        <Tabs />
+        <Tabs v-if="false" />
     </v-container>
 </template>
 
@@ -41,7 +42,7 @@ export default {
         Tabs,
     },
     data: () => ({
-        funFact: "Fun Fact API",
+        funFact: "Feature Under Construction",
         loader: null,
         uploadLoading: false,
     }),
