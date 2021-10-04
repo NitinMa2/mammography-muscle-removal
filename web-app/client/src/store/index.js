@@ -11,12 +11,12 @@ export default new Vuex.Store({
     mutations: {
         setOriginalImageSrc(state, src) {
             // state.originalImageSrc = src;
-            state.originalImageSrc = require("@/assets/original.png");
+            state.originalImageSrc = require("@/assets/original.jpg");
             // console.log(src.split(",")[1]);
         },
         setSegmentedImageSrc(state, src) {
             // state.originalImageSrc = src;
-            state.segmentedImageSrc = require("@/assets/segmented.png");
+            state.segmentedImageSrc = require("@/assets/segmented.jpg");
             // console.log(src.split(",")[1]);
         },
     },

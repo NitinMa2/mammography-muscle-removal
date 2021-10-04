@@ -98,7 +98,7 @@
                                     size="164"
                                     tile
                                 >
-                                    <img src="@/assets/nitin.png" />
+                                    <img src="@/assets/nitin.jpg" />
                                 </v-avatar>
                             </v-col>
                             <v-col class="py-0">
@@ -172,7 +172,7 @@
                                     size="164"
                                     tile
                                 >
-                                    <img src="@/assets/yasir.png" />
+                                    <img src="@/assets/yasir.jpg" />
                                 </v-avatar>
                             </v-col>
                             <v-col class="py-0">
