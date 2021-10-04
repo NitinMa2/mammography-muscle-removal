@@ -10,12 +10,11 @@
             <v-list-item>
                 <v-list-item-content>
                     <v-list-item-title class="text-h6">
-                        Pectoral Muscle
+                        Welcome
                     </v-list-item-title>
-                    <v-list-item-title class="text-h6">
-                        Removal
-                    </v-list-item-title>
-                    <v-list-item-subtitle>Team 02</v-list-item-subtitle>
+                    <v-list-item-subtitle
+                        >to our Final Year Project</v-list-item-subtitle
+                    >
                 </v-list-item-content>
             </v-list-item>
         </v-list>
