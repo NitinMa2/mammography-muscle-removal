@@ -19,11 +19,10 @@ SINGLE_WELL = 'single-well'
 
 class Level_Set: 
 
-    def __init__(self, image, potential_function) -> None:
+    def __init__(self, potential_function) -> None:
         self.pf = potential_function
-        self.img = image
 
-    def initialise_params(self):
+    def initialise_params(self, image):
         """
         Parametes:
             preprocessed_img: Input image that has been preprocessed. It will be passed as a parameter 
@@ -34,13 +33,13 @@ class Level_Set:
         """
         # initialize LSF as binary step function
         c0 = 2
-        initial_lsf = c0 * np.ones(self.img.shape)
+        initial_lsf = c0 * np.ones(image.shape)
         # generate the initial region R0 as two rectangles
         initial_lsf[0:10, 0:10] = -c0 # top left corner
 
         # parameters
         return {
-            'img': self.img,
+            'img': image,
             'initial_lsf': initial_lsf,
             'timestep': 7,  # time step
             'iter_inner': 10,
@@ -76,8 +75,8 @@ class Level_Set:
         if len(img.shape) != len(initial_lsf.shape):
             raise Exception("Input image and the initial LSF should be in the same shape")
 
-        if np.max(img) <= 1:
-            raise Exception("Please make sure the image data is in the range [0, 255]")
+        if potential_function != SINGLE_WELL and potential_function != DOUBLE_WELL:
+            raise Exception("Potential function should be either SINGLE-WELL or DOUBLE-WELL")
 
         # parameters
         mu = 0.2 / timestep  # coefficient of the distance regularization term R(phi)
@@ -209,7 +208,7 @@ class Level_Set:
         g[1:-1, np.ix_([0, -1])] = g[1:-1, np.ix_([2, -3])]
         return g
 
-    def save_segmented_image(self, phi: np.ndarray, img: np.ndarray):
+    def segment_image(self, phi: np.ndarray, img: np.ndarray):
         """
         Assign the pixel within the boundary to be black. Save the output image. Return the segmented and original image for 
         visualisation purpose.
@@ -235,14 +234,23 @@ class Level_Set:
                 img[i,j] = 0
         return img
 
-    def run_level_set(self):
-        params = self.initialise_params()
+    def run_level_set(self, image):
+        params = self.initialise_params(image)
         phi = self.find_lsf(**params)
-        return self.save_segmented_image(phi, image_data)
+        f = open("phi.txt", 'w')
+        for item in phi:
+            f.write(str(item))
+            f.write(",")
+        f.close()
+        return self.segment_image(phi, image_data)
 
 
-image_data = cv2.imread("mdb001.png", 0)
-ls = Level_Set(image_data, 'double-well')
-img = ls.run_level_set()
-plt.imshow(img)
-plt.show()
+# image_data = cv2.imread("mdb001.png", 0)
+# ls = Level_Set('double-well')
+# img = ls.run_level_set(image_data)
+# plt.imshow(img)
+# plt.show()
+
+ls = Level_Set('double-well')
+phi = np.array([[-2,-2.1,-2.2],[-2.1,-2.2,-2.3],[-2.1,-2.2,-2.3]])
+print(ls.dist_reg_p2(phi))
