@@ -39,9 +39,9 @@ class Region_Growing():
                 # Include current pixel in segmentation
                 self.segmentation[curr_pixel[0], curr_pixel[1]] = 0
                 # Explore neighbours of current pixel
-                contour = self.__explore_neighbours(contour, curr_pixel)
+                contour = self.explore_neighbours(contour, curr_pixel)
                 # Get the nearest neighbour
-                nearest_neighbour_idx, dist = self.__get_nearest_neighbour(contour, mean_seg_value)
+                nearest_neighbour_idx, dist = self.get_nearest_neighbour(contour, mean_seg_value)
                 # If no more neighbours to grow, move to the next seed
                 if nearest_neighbour_idx == -1 : break
                 # Update Current pixel to the nearest neighbour and increment size
@@ -63,7 +63,7 @@ class Region_Growing():
         # Display the result
         return result
 
-    def __explore_neighbours(self, contour, current_pixel):
+    def explore_neighbours(self, contour, current_pixel):
         for orientation in self.orientations:
             neighbour = self.__get_neighbouring_pixel(current_pixel, orientation, self.img.shape)
             if neighbour is None:
@@ -80,7 +80,7 @@ class Region_Growing():
         else:
             return None
 
-    def __get_nearest_neighbour(self, contour, mean_seg_value):
+    def get_nearest_neighbour(self, contour, mean_seg_value):
         dist_list = [abs(self.img[pixel[0], pixel[1]] - mean_seg_value) for pixel in contour]
         if len(dist_list) == 0: return -1, 1000
         min_dist = min(dist_list)
@@ -90,9 +90,9 @@ class Region_Growing():
     def is_pixel_inside_image(self, pixel, img_shape):
         return 0 <= pixel[0] < img_shape[0] and 0 <= pixel[1] < img_shape[1]
 
-image_data = cv2.imread("mdb001.png", 0)
-rg = Region_Growing(image_data, 6200, threshold=60, conn=4)
-# rg.segment()
-# result = rg.display_and_resegment()
-# plt.imshow(result)
-# plt.show()
+image_data = cv2.imread("mdb001.pgm", 0)
+rg = Region_Growing(image_data, 6200, threshold=40, conn=8)
+rg.segment()
+result = rg.display_and_resegment()
+plt.imshow(result)
+plt.show()
