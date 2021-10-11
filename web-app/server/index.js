@@ -6,6 +6,7 @@ const port = process.env.PORT || 5000; // use port specified by system or fallba
 const app = express(); // instantiate server
 
 // middleware
+app.use(history()); // allows the client to visit routes directly
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json()); // allows us to parse incoming json
@@ -14,7 +15,6 @@ app.use(
         extended: true,
     })
 );
-// app.use(history()); // allows the client to visit routes directly
 
 // handling api calls to backend
 const segmentation = require("./routes/api/segmentation");
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "/public/")));
 
     // handle SPA
-    app.get(/.*/, (req, res) => res.sendFile(__dirname + "public/index.html"));
+    // app.get(/.*/, (req, res) => res.sendFile(__dirname + "public/index.html"));
 }
 
 app.listen(port, () => {
