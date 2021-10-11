@@ -6,20 +6,15 @@ from flask import abort, jsonify
 
 '''
 Pectoral Muscle Segmentation API
-
 Valid Methods = POST
 Valid Endpoint = Segment
 http://127.0.0.1:5000/segment/{base64_string}
 This Post Method with segment endpoint takes in a base64 encoded image in string format 
 and gives a json response with the segmented image in base64 encoded string.
-
 A valid API call example will look like
-
 http://127.0.0.1:5000/segment/{base64_string}
-
 with response
-
-{"Segmented" : "base_64_image_string"}
+{"segmentedImage" : "base_64_image_string"}
 '''
 app = Flask(__name__)
 
@@ -42,15 +37,17 @@ def method_not_allowed(e):
     return {"Method not Allowed Error": "This method is not supported by the API"}
 
 
-@app.route('/segment/<path:base64str>', methods=['POST'])
-def segment(base64str):
+@app.route('/segment', methods=['POST'])
+def segment():
+    base64str = request.get_json()["base64Image"]
+
     if base64str is None:
         abort(404, description="Resource not found")
         return jsonify(base64str)
 
     if request.method == 'POST':
         if isBase64(base64str):
-            output = {"segmented Image": region_growing.run_region_growing_on_image(base64str)}
+            output = {"segmentedImage": region_growing.run_region_growing_on_image(base64str)}
         else:
             output = {"Input Error": "Please Input Base64 String Type"}
         return output
@@ -58,6 +55,7 @@ def segment(base64str):
         output = {"Method not Allowed Error": "This method is not supported by the API"}
         return output
     output = {"Internal Server Error": "Please Check your input parameters"}
+
     return output
 
 
