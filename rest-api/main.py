@@ -6,14 +6,20 @@ from flask import abort, jsonify
 
 '''
 Pectoral Muscle Segmentation API
-Valid Methods = POST
-Valid Endpoint = Segment
-http://127.0.0.1:5000/segment/{base64_string}
+
 This Post Method with segment endpoint takes in a base64 encoded image in string format 
-and gives a json response with the segmented image in base64 encoded string.
-A valid API call example will look like
-http://127.0.0.1:5000/segment/{base64_string}
-with response
+and gives a JSON response with the segmented image in base64 encoded string.
+
+>> Usage
+Valid Methods = POST
+Valid Endpoint = /segment
+
+>> Sample API Request
+Make the request to
+http://127.0.0.1:5000/segment
+Ensure to include a JSON body containing 'base64Image' as an attribute
+
+>> Sample Response
 {"segmentedImage" : "base_64_image_string"}
 '''
 app = Flask(__name__)
@@ -38,6 +44,12 @@ def method_not_allowed(e):
 
 
 def create_error_message(message, status_code=400):
+    """
+    Helper function to create an error message with a standard JSON structure
+    :param message: The error message
+    :param status_code: The status code, 400 by default
+    :return: JSON error message
+    """
     return {
         "error": {
             "status": status_code,
@@ -48,10 +60,14 @@ def create_error_message(message, status_code=400):
 
 @app.route('/segment', methods=['POST'])
 def segment():
+
+    # values to be returned
     response = None
     status_code = None
 
+    # checking if the request contains a valid JSON object
     if request.get_json():
+        # checking if the JSON contains base64Image
         if 'base64Image' in request.get_json():
             base64str = request.get_json()["base64Image"]
         else:
@@ -61,12 +77,15 @@ def segment():
         base64str = None
         response = create_error_message("Please ensure your request body includes a JSON object")
 
+    # checking for a valid base64 string
     if base64str is None:
         status_code = 400
         if response is None:
             abort(500)  # Internal Server Error
     else:
+        # checking if the request method is a POST
         if request.method == 'POST':
+            # checking if the base64 string can be decoded
             if is_base64(base64str):
                 status_code = 200
                 response = {"segmentedImage": region_growing.run_region_growing_on_image(base64str)}
@@ -77,6 +96,7 @@ def segment():
             status_code = 405
             response = create_error_message("The URL does not support the " + request.method + " method", status_code)
 
+    # ensuring the codes above handled the request correctly
     if status_code is None or response is None:
         abort(500)  # Internal Server Error
 
