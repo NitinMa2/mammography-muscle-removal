@@ -1,16 +1,12 @@
 const express = require("express"); // express server
 const cors = require("cors"); // allows the client to communicate with the server
 const morgan = require("morgan"); // used to log http requests to the console
+const history = require("connect-history-api-fallback"); // allows the client to access routes directly
 const path = require("path"); // for relative paths
 const port = process.env.PORT || 5000; // use port specified by system or fallback to 8080
 const app = express(); // instantiate server
 
 // middleware
-app.use(
-    history({
-        verbose: true,
-    })
-);
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json()); // allows us to parse incoming json
@@ -28,6 +24,12 @@ app.use("/api/segmentation", segmentation);
 if (process.env.NODE_ENV === "production") {
     // static folder
     app.use(express.static(path.join(__dirname, "/public/")));
+    // routing
+    app.use(
+        history({
+            verbose: true,
+        })
+    );
 
     // handle SPA
     app.get(/.*/, (req, res) => res.sendFile(__dirname + "public/index.html"));
