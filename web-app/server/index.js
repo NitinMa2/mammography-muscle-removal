@@ -14,7 +14,7 @@ app.use(
         extended: true,
     })
 );
-app.use(history()); // allows the client to visit routes directly
+// app.use(history()); // allows the client to visit routes directly
 
 // handling api calls to backend
 const segmentation = require("./routes/api/segmentation");
