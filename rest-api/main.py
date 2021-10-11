@@ -6,19 +6,15 @@ from flask import abort, jsonify
 
 '''
 Pectoral Muscle Segmentation API
-
 This Post Method with segment endpoint takes in a base64 encoded image in string format 
 and gives a JSON response with the segmented image in base64 encoded string.
-
 >> Usage
 Valid Methods = POST
 Valid Endpoint = /segment
-
 >> Sample API Request
 Make the request to
 http://127.0.0.1:5000/segment
 Ensure to include a JSON body containing 'base64Image' as an attribute
-
 >> Sample Response
 {"segmentedImage" : "base_64_image_string"}
 '''
