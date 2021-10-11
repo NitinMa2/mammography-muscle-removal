@@ -12,10 +12,7 @@
                 <div style="text-align:center" class="pa-md-6">
                     <span class="POST">Segment</span>
                     <span class="Segment"> Endpoint</span>
-                    <v-bottom-navigation
-                        :value="value"
-                        color="primary"
-                        class="mt-5 pt-1"
+                    <v-bottom-navigation color="primary" class="mt-5 pt-1"
                         ><h3>https://team02-fyp-api.herokuapp.com/segment</h3>
                     </v-bottom-navigation>
                     <br />
