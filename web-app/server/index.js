@@ -22,17 +22,18 @@ app.use("/api/segmentation", segmentation);
 
 // handle production
 if (process.env.NODE_ENV === "production") {
-    // static folder
-    app.use(express.static(path.join(__dirname, "/public/")));
     // routing
     app.use(
         history({
             verbose: true,
+            // index: "/public/index.html",
         })
     );
+    // static folder
+    app.use(express.static(path.join(__dirname, "/public/")));
 
     // handle SPA
-    app.get(/.*/, (req, res) => res.sendFile(__dirname + "public/index.html"));
+    // app.get(/.*/, (req, res) => res.sendFile(__dirname + "public/index.html"));
 }
 
 app.listen(port, () => {
