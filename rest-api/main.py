@@ -29,37 +29,61 @@ def resource_not_found(e):
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    return {"Internal Server Error": "Please check your url or parameters"}
+    return jsonify(message="Internal Server Error"), 500
 
 
 @app.errorhandler(405)
 def method_not_allowed(e):
-    return {"Method not Allowed Error": "This method is not supported by the API"}
+    return jsonify(message="Method Not Allowed"), 405
+
+
+def create_error_message(message, status_code=400):
+    return {
+        "error": {
+            "status": status_code,
+            "message": message
+        }
+    }
 
 
 @app.route('/segment', methods=['POST'])
 def segment():
-    base64str = request.get_json()["base64Image"]
+    response = None
+    status_code = None
+
+    if request.get_json():
+        if 'base64Image' in request.get_json():
+            base64str = request.get_json()["base64Image"]
+        else:
+            base64str = None
+            response = create_error_message("Please ensure your request body includes the base64Image attribute")
+    else:
+        base64str = None
+        response = create_error_message("Please ensure your request body includes a JSON object")
 
     if base64str is None:
-        abort(404, description="Resource not found")
-        return jsonify(base64str)
-
-    if request.method == 'POST':
-        if isBase64(base64str):
-            output = {"segmentedImage": region_growing.run_region_growing_on_image(base64str)}
+        status_code = 400
+        if response is None:
+            abort(500)  # Internal Server Error
+    else:
+        if request.method == 'POST':
+            if is_base64(base64str):
+                status_code = 200
+                response = {"segmentedImage": region_growing.run_region_growing_on_image(base64str)}
+            else:
+                status_code = 400
+                response = create_error_message("Please ensure your request includes a valid base64 string")
         else:
-            output = {"Input Error": "Please Input Base64 String Type"}
-        return output
-    if request.method != 'POST':
-        output = {"Method not Allowed Error": "This method is not supported by the API"}
-        return output
-    output = {"Internal Server Error": "Please Check your input parameters"}
+            status_code = 405
+            response = create_error_message("The URL does not support the " + request.method + " method", status_code)
 
-    return output
+    if status_code is None or response is None:
+        abort(500)  # Internal Server Error
+
+    return response, status_code
 
 
-def isBase64(sb):
+def is_base64(sb):
     try:
         if isinstance(sb, str):
             # If there's any unicode here, an exception will be thrown and the function will return false
@@ -74,4 +98,4 @@ def isBase64(sb):
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
