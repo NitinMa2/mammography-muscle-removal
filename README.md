@@ -31,7 +31,7 @@ The environment should now contain the following libraries:
 -   Seaborn
 -   Scikit-image
 -   OpenCV-Python
-- 	Pydicom
+-             Pydicom
 -   Requests
 
 ### For MacOS Users
@@ -74,16 +74,20 @@ To run the jupyter notebook on your localhost, run this command from the project
 ```bash
 jupyter notebook
 ```
+
 ## Segmentation API Documentation
 
 Only Valid API method is POST and only valid endpoint is Segment
 This Post Method with segment endpoint takes in a base64 encoded image in string format and gives a json response with the segmented image in base64 encoded string.
 
 A valid API call example will look like
+
 ```
 {api_url}/segment/{base64_string}
 ```
+
 with response
+
 ```
 {"Segmented" : "base_64_image_string"}
 ```
@@ -112,6 +116,44 @@ npm run dev
 ```
 
 You can then access the app through http://localhost:8080 .
+
+## REST API Setup
+
+The REST API lives in the `rest-api` directory. We need to configure the python environment to run the API. There is a `rest-api/requirements.txt` file that contains all the dpenedencies exclusively for the API but using the `fyp_env` should also work (if not, please alert Nitin).
+
+### Running the API Locally
+
+Running `main.py` will allow access to the API at http://127.0.0.1:5000 . This can be achieved by executing:
+
+```bash
+python main.py
+```
+
+## REST API Usage
+
+POST requests can made to the `/segment` endpoint. The API expects a JSON body containing the `base64Image` attribute which is used as the input to the region growing segmentation algorithm.
+
+### Sample Request URL
+
+```bash
+http://127.0.0.1:5000/segment
+```
+
+### Sample Request Body
+
+```bash
+{
+    "base64Image": "asdaGVsbG8="
+}
+```
+
+### Sample Response
+
+```bash
+{
+    "segmentedImage" : "asdaGVsbG8="
+}
+```
 
 # Contributing Guidelines
 
