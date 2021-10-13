@@ -27,9 +27,10 @@
                             <div class="tab__actions--buttons">
                                 <v-btn
                                     :loading="downloadLoading"
-                                    :disabled="downloadLoading || true"
+                                    :disabled="downloadLoading"
                                     color="primary"
                                     class="ma-2 white--text"
+                                    @click="handleDownload"
                                 >
                                     Download Output
                                     <v-icon right dark>
@@ -37,7 +38,7 @@
                                     </v-icon>
                                 </v-btn>
 
-                                <v-btn
+                                <!-- <v-btn
                                     :loading="emailLoading"
                                     :disabled="emailLoading || true"
                                     color="primary"
@@ -47,7 +48,7 @@
                                     <v-icon right dark>
                                         mdi-email-send
                                     </v-icon>
-                                </v-btn>
+                                </v-btn> -->
                             </div>
                             <div
                                 class="tab__actions--rate d-flex flex-column flex-sm-row"
@@ -87,7 +88,7 @@ export default {
     data: () => ({
         loader: null,
         downloadLoading: false,
-        emailLoading: false,
+        // emailLoading: false,
         tab: null,
         items: ["Original", "Segmented"],
         imageSource: "",
@@ -101,6 +102,21 @@ export default {
                 this.$store.state.base64Prefix +
                 this.$store.state.segmentedImageBase64
             );
+        },
+    },
+    methods: {
+        handleDownload() {
+            // download the image
+            try {
+                let link = document.createElement("a");
+                document.body.appendChild(link);
+                link.setAttribute("href", this.segmentedImageSrc);
+                link.setAttribute("download", "segmented-image");
+                link.click();
+                document.body.removeChild(link);
+            } catch (err) {
+                console.log(err);
+            }
         },
     },
     watch: {
