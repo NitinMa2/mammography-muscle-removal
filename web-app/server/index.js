@@ -19,6 +19,8 @@ app.use(
 // handling api calls from the frontend
 const segmentation = require("./routes/api/segmentation");
 app.use("/api/segmentation", segmentation);
+const rating = require("./routes/api/rating");
+app.use("/api/rating", rating);
 
 // handle production
 if (process.env.NODE_ENV === "production") {

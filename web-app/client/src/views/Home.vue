@@ -84,6 +84,8 @@ export default {
             if (event.target.files.length) {
                 // set spinner
                 this.isLoading = true;
+                // set rating component
+                this.$store.commit("setShowRatingComponent", true);
 
                 // reset any current selection
                 this.$store.commit("setOriginalImageBase64", "");

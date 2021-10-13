@@ -101,10 +101,12 @@ cd web-app
 npm install
 ```
 
-In order to be able to connect with the MongoDB instance, you will need to add the uri to a `web-app/.env` file. Add the content of the `.env` file:
+In order to be able to connect with the MongoDB instance, you will need to add the uri, and DB details to a `web-app/.env` file. Add the content of the `.env` file and make sure to replace everything after the `=`:
 
 ```
 VUE_APP_MONGO_URI=<your_uri>
+VUE_APP_MONGO_DB_NAME=<your_db_name>
+VUE_APP_MONGO_COLLECTION_NAME=<your_collection_name>
 ```
 
 ## Starting the Web App in localhost

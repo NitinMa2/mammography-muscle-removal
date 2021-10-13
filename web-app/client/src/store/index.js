@@ -9,6 +9,7 @@ export default new Vuex.Store({
         originalImageBase64: "",
         segmentedImageBase64: "",
         base64Prefix: "",
+        showRatingComponent: true,
     },
     // manipulating the app state
     mutations: {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
         },
         setBase64Prefix(state, prefix) {
             state.base64Prefix = prefix;
+        },
+        setShowRatingComponent(state, bool) {
+            state.showRatingComponent = bool;
         },
     },
     actions: {},

@@ -51,6 +51,7 @@
                                 </v-btn> -->
                             </div>
                             <div
+                                v-if="showRatingComponent"
                                 class="tab__actions--rate d-flex flex-column flex-sm-row"
                             >
                                 <p class="mr-sm-2">Rate this result:</p>
@@ -60,6 +61,7 @@
                                         text
                                         icon
                                         color="blue lighten-2"
+                                        @click="handleGoodRating"
                                     >
                                         <v-icon>mdi-thumb-up</v-icon>
                                     </v-btn>
@@ -68,10 +70,19 @@
                                         text
                                         icon
                                         color="red lighten-2"
+                                        @click="handleBadRating"
                                     >
                                         <v-icon>mdi-thumb-down</v-icon>
                                     </v-btn>
                                 </div>
+                            </div>
+                            <div
+                                v-else
+                                class="tab__actions--rate d-flex flex-column flex-sm-row"
+                            >
+                                <p class="mr-sm-2">
+                                    Thank you for rating the result!
+                                </p>
                             </div>
                         </div>
                     </v-card>
@@ -82,6 +93,7 @@
 </template>
 
 <script>
+import RatingService from "@/services/RatingService";
 export default {
     name: "Tabs",
 
@@ -103,6 +115,9 @@ export default {
                 this.$store.state.segmentedImageBase64
             );
         },
+        showRatingComponent() {
+            return this.$store.state.showRatingComponent;
+        },
     },
     methods: {
         handleDownload() {
@@ -117,6 +132,30 @@ export default {
             } catch (err) {
                 console.log(err);
             }
+        },
+        async handleGoodRating() {
+            // hide the rating component
+            this.$store.commit("setShowRatingComponent", false);
+            // API request to backend
+            RatingService.postRating(true)
+                .then(() => console.log("Positive rating received!"))
+                .catch(() => {
+                    alert("There has been an error. Please contact our team.");
+                    // show the rating component
+                    this.$store.commit("setShowRatingComponent", true);
+                });
+        },
+        async handleBadRating() {
+            // hide the rating component
+            this.$store.commit("setShowRatingComponent", false);
+            // API request to backend
+            RatingService.postRating(false)
+                .then(() => console.log("Negative rating received!"))
+                .catch(() => {
+                    alert("There has been an error. Please contact our team.");
+                    // show the rating component
+                    this.$store.commit("setShowRatingComponent", true);
+                });
         },
     },
     watch: {

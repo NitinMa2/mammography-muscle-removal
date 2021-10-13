@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
         createdAt: new Date(),
     });
     res.status(201).send();
-}
+})
 
 async function loadSegmentationCollection() {
     const uri = `${process.env.VUE_APP_MONGO_URI}`;
