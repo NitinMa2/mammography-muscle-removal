@@ -16,7 +16,7 @@ app.use(
     })
 );
 
-// handling api calls to backend
+// handling api calls from the frontend
 const segmentation = require("./routes/api/segmentation");
 app.use("/api/segmentation", segmentation);
 

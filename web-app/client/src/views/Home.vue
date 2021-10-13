@@ -24,14 +24,25 @@
                 accept="image/*"
                 @change="onImageSelected"
             />
-            <!-- <p v-if="funFact.length != 0" id="fact">{{ funFact }}</p> -->
         </div>
-        <Tabs v-if="originalImageSrc.length" />
+        <!-- Spinner for Loading -->
+        <div class="text-center mt-15">
+            <v-progress-circular
+                v-if="isLoading"
+                indeterminate
+                color="teal"
+                size="40"
+                width="5"
+                class="spinner-custom"
+            ></v-progress-circular>
+        </div>
+        <!-- Tabs component -->
+        <Tabs v-if="segmentedImageSrc.length" />
     </v-container>
 </template>
 
 <script>
-import SegmentationService from "@/SegmentationService";
+import SegmentationService from "@/services/SegmentationService";
 import Tabs from "@/components/Tabs";
 
 export default {
@@ -41,53 +52,88 @@ export default {
         Tabs,
     },
     data: () => ({
-        funFact: "Fun Fact API",
         loader: null,
         uploadLoading: false,
+        isLoading: false,
     }),
     computed: {
-        originalImageSrc() {
-            return this.$store.state.originalImageSrc;
+        segmentedImageSrc() {
+            return this.$store.state.segmentedImageBase64;
         },
     },
     methods: {
         async handleUpload() {
+            // fun fact api
             // url = "https://catfact.ninja/fact"
             // let response = await fetch(url);
             // let data = await response.json();
-
             // this.funFact = data.fact;
+
+            // loading animation
             try {
                 this.loader = "uploadLoading";
                 this.$refs.imageInput.click();
-
-                // await SegmentationService.postDocument();
-                // this.funFact = await SegmentationService.getDocuments();
             } catch (err) {
                 console.log(err);
             }
         },
-        onImageSelected(event) {
-            // https://www.youtube.com/watch?v=J2Wp4_XRsWc
-            const image = event.target.files[0];
-            let imagename = image.name;
-            // validation
-            if (imagename.lastIndexOf(".") <= 0) {
-                return alert("Please enter a vaild file");
+        async onImageSelected(event) {
+            // reference: https://www.youtube.com/watch?v=J2Wp4_XRsWc
+
+            // only if an image is selected
+            if (event.target.files.length) {
+                // set spinner
+                this.isLoading = true;
+
+                // reset any current selection
+                this.$store.commit("setOriginalImageBase64", "");
+                this.$store.commit("setBase64Prefix", "");
+                this.$store.commit("setSegmentedImageBase64", "");
+
+                // handle image
+                const image = event.target.files[0];
+                let imagename = image.name;
+                // validation
+                if (imagename.lastIndexOf(".") <= 0) {
+                    return alert("Please enter a vaild file");
+                }
+                const fileReader = new FileReader();
+                fileReader.readAsDataURL(image);
+                fileReader.addEventListener("load", () => {
+                    // store the original image in the app state
+                    this.$store.commit(
+                        "setOriginalImageBase64",
+                        fileReader.result
+                    );
+                    // store the image prefix in the app state
+                    this.$store.commit(
+                        "setBase64Prefix",
+                        fileReader.result.split(",")[0] + ","
+                    );
+                    // API request to backend
+                    SegmentationService.postMammogram(
+                        fileReader.result.split(",")[1]
+                    )
+                        .then((res) => {
+                            // store the segmented image in the app state
+                            this.$store.commit("setSegmentedImageBase64", res);
+                            // set spinner
+                            this.isLoading = false;
+                        })
+                        .catch((e) => {
+                            alert(
+                                "There has been an error. Please contact our team."
+                            );
+                            // set spinner
+                            this.isLoading = false;
+                        });
+                });
             }
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(image);
-            fileReader.addEventListener("load", () => {
-                // this.imageUrl = fileReader.result;
-                // console.log(fileReader.result);
-                this.$store.commit("setOriginalImageSrc", fileReader.result);
-                this.$store.commit("setSegmentedImageSrc", fileReader.result);
-            });
-            // console.log(image);
         },
     },
     watch: {
         loader() {
+            // loading animation logic
             const l = this.loader;
             this[l] = !this[l];
 

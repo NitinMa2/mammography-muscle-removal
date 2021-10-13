@@ -1,8 +1,12 @@
+const { default: axios } = require("axios"); // for api calls
 const express = require("express"); // express server
-const { MongoClient } = require("mongodb"); // mongodb
-require("dotenv").config(); // for accessing env variables
 
 const router = express.Router();
+
+/*
+------------ REFERENCE CODE ------------
+const { MongoClient } = require("mongodb"); // mongodb
+require("dotenv").config(); // for accessing env variables
 
 // Get
 router.get("/", async (req, res) => {
@@ -18,7 +22,7 @@ router.post("/", async (req, res) => {
         createdAt: new Date(),
     });
     res.status(201).send();
-});
+}
 
 async function loadSegmentationCollection() {
     const uri = `${process.env.VUE_APP_MONGO_URI}`;
@@ -36,5 +40,20 @@ async function loadSegmentationCollection() {
 
     return client.db(dbName).collection(colName);
 }
+----------------------------------------
+*/
+
+// Post
+router.post("/", async (req, res) => {
+    // url for the segmentation algorithm
+    url = "https://team02-fyp-api.herokuapp.com/segment";
+
+    output = await axios.post(url, {
+        base64Image: req.body.base64Image,
+    });
+
+    // return the json response
+    res.status(200).send(output.data);
+});
 
 module.exports = router;

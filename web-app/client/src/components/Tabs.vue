@@ -94,10 +94,13 @@ export default {
     }),
     computed: {
         originalImageSrc() {
-            return this.$store.state.originalImageSrc;
+            return this.$store.state.originalImageBase64;
         },
         segmentedImageSrc() {
-            return this.$store.state.segmentedImageSrc;
+            return (
+                this.$store.state.base64Prefix +
+                this.$store.state.segmentedImageBase64
+            );
         },
     },
     watch: {

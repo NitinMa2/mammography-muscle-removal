@@ -4,20 +4,22 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+    // app state
     state: {
-        originalImageSrc: "",
-        segmentedImageSrc: "",
+        originalImageBase64: "",
+        segmentedImageBase64: "",
+        base64Prefix: "",
     },
+    // manipulating the app state
     mutations: {
-        setOriginalImageSrc(state, src) {
-            // state.originalImageSrc = src;
-            state.originalImageSrc = require("@/assets/original.jpg");
-            // console.log(src.split(",")[1]);
+        setOriginalImageBase64(state, base64) {
+            state.originalImageBase64 = base64;
         },
-        setSegmentedImageSrc(state, src) {
-            // state.originalImageSrc = src;
-            state.segmentedImageSrc = require("@/assets/segmented.jpg");
-            // console.log(src.split(",")[1]);
+        setSegmentedImageBase64(state, base64) {
+            state.segmentedImageBase64 = base64;
+        },
+        setBase64Prefix(state, prefix) {
+            state.base64Prefix = prefix;
         },
     },
     actions: {},
