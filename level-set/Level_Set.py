@@ -237,20 +237,11 @@ class Level_Set:
     def run_level_set(self, image):
         params = self.initialise_params(image)
         phi = self.find_lsf(**params)
-        f = open("phi.txt", 'w')
-        for item in phi:
-            f.write(str(item))
-            f.write(",")
-        f.close()
-        return self.segment_image(phi, image_data)
+        return self.segment_image(phi, image)
 
 
-# image_data = cv2.imread("mdb001.png", 0)
-# ls = Level_Set('double-well')
-# img = ls.run_level_set(image_data)
-# plt.imshow(img)
-# plt.show()
-
+image_data = cv2.imread("mdb001.png", 0)
 ls = Level_Set('double-well')
-phi = np.array([[-2,-2.1,-2.2],[-2.1,-2.2,-2.3],[-2.1,-2.2,-2.3]])
-print(ls.dist_reg_p2(phi))
+img = ls.run_level_set(image_data)
+plt.imshow(img)
+plt.show()
