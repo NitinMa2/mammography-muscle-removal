@@ -3,6 +3,16 @@
         <!-- Title -->
         <h1>Automated Pectoral Muscle Removal System for Mammograms</h1>
 
+        <p class="text-center mb-7">
+            You can use one of our
+            <a
+                href="https://drive.google.com/drive/folders/1tu5_xJKtWOCc9BdoNOYR9uYpnlslfZib?usp=sharing"
+                target="_blank"
+                >sample images</a
+            >
+            to try out the platform!
+        </p>
+
         <!-- Upload -->
         <div class="div__upload">
             <v-btn
