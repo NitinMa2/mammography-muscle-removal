@@ -1,14 +1,21 @@
 import base64
 import requests
+import json
 
-BASE = "http://127.0.0.1:5000/"
+BASE = "http://127.0.0.1:5000/segment"
 
 
 def img2string(path):
     with open(path, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
         image_string = encoded_string.decode('utf-8')
-        response = requests.post(BASE + "segment/" + image_string)
+        payload = json.dumps({
+            "base64Image": image_string
+        })
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        response = requests.request("POST", BASE, headers=headers, data=payload)
         return response.json()
 
 
@@ -20,10 +27,22 @@ if __name__ == "__main__":
     print("\n---Testing Invalid parameters")
     invalid_args = ["notvalidbase64", "965945", "/+=2", ""]
     for i in invalid_args:
-        response = requests.post(BASE + "segment/" + i)
+        payload = json.dumps({
+            "base64Image": i
+        })
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        response = requests.request("POST", BASE, headers=headers, data=payload)
         print(response.json())
     print("\n---Testing Invalid api method")
-    response = requests.get(BASE + "segment/fjndjfdbjfbdj")
+    payload = json.dumps({
+        "base64Image": "anystring"
+    })
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    response = requests.request("GET", BASE, headers=headers, data=payload)
     print(response.json())
     print("\n---Testing Invalid api endpoint")
     response = requests.post(BASE + "/ok")

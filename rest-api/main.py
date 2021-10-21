@@ -114,4 +114,4 @@ def is_base64(sb):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
